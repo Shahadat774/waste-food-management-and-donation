@@ -1,9 +1,12 @@
 import { useContext, useState } from 'react';
 import './Card.css';
 import { mkcon } from './App';
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom';
 function Card({i}){
-    const[access,setaccess]=useContext(mkcon);
+    const[access]=useContext(mkcon);
     const[count,setcount]=useState(0);
+    const d=new Date( i.expiry_date);
     function getfood(){
         fetch('http://localhost:4000/request', {
             method: 'POST',
@@ -26,18 +29,24 @@ function Card({i}){
                 method: 'DELETE',
               });
               setcount(count+1);
+                Swal.fire({
+                              title: "Good job!",
+                              text: "You are success",
+                              icon: "success"
+                            });
+
     }
     return(
-<div className='card'>
+<div className='card col-12 col-md-4 mb-4'>
     
-<h2>donare name:{i.name}</h2>
-<h3>donare phone number:{i.phone}</h3>
-<h3>donare address:{i.address}</h3>
-<h3>food Description:{i.food_des}</h3>
-<h3>food Quantity:{i.quantity}</h3>
-<h3>food expiry date:{i.expiry_date}</h3>
-<h3>food Location:{i.location}</h3>
-<button onClick={getfood}>Request for this food</button>
+<h2 className='text-info'>Donare name:</h2><h4>{i.name}</h4>
+<h3 className='text-info'>Donare phone number:</h3><h4> {i.phone}</h4>
+<h3 className='text-info'>Donare address:</h3> <h4> {i.address}</h4>
+<h3 className='text-info'>Food Name:</h3> <h4> {i.food_des}</h4>
+<h3 className='text-info'>Food Quantity:</h3> <h4> {i.quantity} kg</h4>
+<h3 className='text-info'>Food expiry date:</h3> <h4> {d.toLocaleString()}</h4>
+<h3 className='text-info'>Food Location:</h3> <h4> {i.location}</h4>
+<button className='btn btn-primary' onClick={getfood}><Link to='/'> <b className='text-dark'>Request for this food </b></Link></button>
 </div>
     )
 }
